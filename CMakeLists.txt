@@ -39,9 +39,9 @@ find_package(Threads REQUIRED)
 
 # Enable/disable shader compilation support that pulls in glslang
 set(VSG_SUPPORTS_ShaderCompiler  1 CACHE STRING "Optional shader compiler support, 0 for off, 1 for enabled." )
-find_package(glslang)
-if (VSG_SUPPORTS_ShaderCompiler AND NOT glslang_FOUND)
-    if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/glslang/build_vars.cmake)
+set(VSG_glslang_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/glslang CACHE STRING "Path to glslang source code")
+if (VSG_SUPPORTS_ShaderCompiler)
+    if (NOT EXISTS ${VSG_glslang_DIR})
         if (Git_FOUND)
 
             set(glslang_URL "https://github.com/vsg-dev/glslang.git" CACHE STRING "URL of the glslang git repository")
@@ -62,6 +62,9 @@ if (VSG_SUPPORTS_ShaderCompiler AND NOT glslang_FOUND)
                 message(WARNING "git clone of glslang failed. ShaderCompile support disabled.")
                 set(VSG_SUPPORTS_ShaderCompiler 0)
         endif()
+    else()
+        # include glslang source code directly into the VulkanSceneGraph library build.
+        include(${VSG_glslang_DIR}/build_vars.cmake)
     endif()
 endif()
 
