@@ -226,12 +226,6 @@ set(SOURCES
     utils/LoadPagedLOD.cpp
 )
 
-if (${VSG_SUPPORTS_ShaderCompiler})
-
-    # include glslang source code directly into the VulkanScenegraph library build.
-    include(../glslang/build_vars.cmake)
-endif()
-
 # set up library dependencies
 set(LIBRARIES PUBLIC
         Vulkan::Vulkan
