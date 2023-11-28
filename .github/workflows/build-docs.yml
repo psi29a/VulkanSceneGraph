@@ -9,9 +9,11 @@ jobs:
       - name: Install Doxygen
         run: sudo apt install doxygen graphviz
       - name: Install Vulkan
-        uses: humbletim/install-vulkan-sdk@v1.1.1
+        uses: humbletim/setup-vulkan-sdk@v1.2.0
         with:
-          version: latest
+          vulkan-query-version: 1.3.224.1
+          vulkan-components: Vulkan-Headers, Vulkan-Loader, Glslang
+          vulkan-use-cache: true
       - name: Configure VulkanSceneGraph
         run: cmake -S . -B . -DCMAKE_BUILD_TYPE=Release
       - name: Build Documentation
