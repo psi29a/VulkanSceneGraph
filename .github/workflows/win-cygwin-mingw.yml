@@ -7,9 +7,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install Vulkan SDK
-      uses: humbletim/install-vulkan-sdk@v1.1.1
+      uses: humbletim/install-vulkan-sdk@1.2.0
       with:
         version: latest
+        vulkan-components: Vulkan-Headers, Vulkan-Loader, Glslang
         cache: true
 
     - uses: msys2/setup-msys2@v2
@@ -89,7 +90,7 @@ jobs:
             export VULKAN_SDK
             export PATH=$PATH:$VULKAN_SDK/bin
             mkdir build && cd build
-            cmake .. -G Ninja -D Vulkan_LIBRARY="$VULKAN_SDK/lib/libvulkan.so" -DBUILD_SHARED_LIBS=1 -DVSG_USE_SYSTEM_GLSLANG=0
+            cmake .. -G Ninja -D Vulkan_LIBRARY="$VULKAN_SDK/lib/libvulkan.so" -DBUILD_SHARED_LIBS=1
             ninja -v
         }
         build_vsg
@@ -128,7 +129,7 @@ jobs:
             export VULKAN_SDK
             export PATH=$PATH:$VULKAN_SDK/bin
             mkdir build && cd build
-            cmake .. -G Ninja -D Vulkan_LIBRARY="$VULKAN_SDK/lib/libvulkan.so" -DVSG_USE_SYSTEM_GLSLANG=0
+            cmake .. -G Ninja -D Vulkan_LIBRARY="$VULKAN_SDK/lib/libvulkan.so"
             ninja -v
         }
         build_vsg
