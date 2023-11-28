@@ -40,6 +40,7 @@ find_package(Threads REQUIRED)
 set(VSG_USE_SYSTEM_GLSLANG 1 CACHE STRING "Use system installed glslang, 0 for off, 1 for enabled." )
 set(GLSLANG_VERSION 13.1.1)
 if (VSG_USE_SYSTEM_GLSLANG)
+    add_definitions(-DVSG_USE_SYSTEM_GLSLANG)
     find_package(glslang REQUIRED ${GLSLANG_VERSION})
 else ()
     cmake_policy(SET CMP0135 NEW) # use DOWNLOAD_EXTRACT_TIMESTAMP

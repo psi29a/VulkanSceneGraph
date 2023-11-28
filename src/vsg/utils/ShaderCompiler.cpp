@@ -19,7 +19,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <vsg/state/GraphicsPipeline.h>
 #include <vsg/utils/ShaderCompiler.h>
 
-#include <SPIRV/GlslangToSpv.h>
+#if VSG_USE_SYSTEM_GLSLANG
+#   include <glslang/SPIRV/GlslangToSpv.h>
+#else
+#   include <SPIRV/GlslangToSpv.h>
+#endif
 #include <glslang/Public/ResourceLimits.h>
 #include <glslang/Public/ShaderLang.h>
 
