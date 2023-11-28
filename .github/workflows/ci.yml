@@ -44,6 +44,7 @@ jobs:
               make -j 3 && sudo make install
          elif [ "$RUNNER_OS" == "macOS" ]; then
               brew install glslang
+              find /opt/homebrew | grep -i glslang
               cmake . -DBUILD_SHARED_LIBS=${{matrix.build-shared}}
               make -j 4 && make install
          else
