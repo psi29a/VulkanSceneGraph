@@ -40,7 +40,8 @@ jobs:
               cmake . -DBUILD_SHARED_LIBS=${{matrix.build-shared}} -A x64 -DVSG_USE_SYSTEM_GLSLANG=0
               MSBuild.exe INSTALL.vcxproj -p:Configuration=Release
          elif [ "$RUNNER_OS" == "Linux" ]; then
-              cmake . -DBUILD_SHARED_LIBS=${{matrix.build-shared}} -DVSG_USE_SYSTEM_GLSLANG=0
+              sudo apt-get install glslang-dev
+              cmake . -DBUILD_SHARED_LIBS=${{matrix.build-shared}}
               make -j 3 && sudo make install
          elif [ "$RUNNER_OS" == "macOS" ]; then
               brew install glslang
