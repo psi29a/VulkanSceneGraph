@@ -32,7 +32,9 @@ jobs:
         vulkan-components: Vulkan-Headers, Vulkan-Loader, Glslang
         vulkan-use-cache: true
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v1.3.1
+      with:
+        msbuild-architecture: x64
       if: startsWith(matrix.os, 'windows')
     - name: Build and Install VSG
       shell: bash
