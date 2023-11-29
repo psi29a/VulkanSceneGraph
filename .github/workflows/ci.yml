@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v1.12
+      uses: jwlawson/actions-setup-cmake@v1.14.1
       with:
         cmake-version: ${{ env.CMakeVersion }}
     - name: Prepare Vulkan SDK
