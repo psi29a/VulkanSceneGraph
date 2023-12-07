@@ -4,7 +4,7 @@ on:
   pull_request:
 env:
   BuildDocEnabled: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-  CMakeVersion: 3.10.x
+  CMakeVersion: 3.24.x
 jobs:
   build:
     runs-on: ${{ matrix.os }}
