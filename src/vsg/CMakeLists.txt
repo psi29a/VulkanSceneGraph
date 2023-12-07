@@ -242,9 +242,8 @@ set(SOURCES
     utils/PropagateDynamicObjects.cpp
 )
 
-if (${VSG_SUPPORTS_ShaderCompiler})
-
-    # include glslang source code directly into the VulkanScenegraph library build.
+if (${VSG_SUPPORTS_ShaderCompiler} AND NOT glslang_FOUND)
+    # include glslang source code directly into the VulkanSceneGraph library build
     include(../glslang/build_vars.cmake)
 endif()
 
@@ -253,6 +252,10 @@ set(LIBRARIES PUBLIC
         Vulkan::Vulkan
         Threads::Threads
 )
+
+if (glsllang_FOUND)
+    set(LIBRARIES ${LIBRARIES} PRIVATE glslang::glslang glslang::SPIRV glslang::OSDependent glslang::OGLCompiler)
+endif()
 
 # Check for std::atomic
 if(NOT MSVC AND NOT ANDROID AND NOT APPLE)

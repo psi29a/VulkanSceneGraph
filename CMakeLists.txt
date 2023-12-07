@@ -43,12 +43,18 @@ set(VSG_MAX_INSTRUMENTATION_LEVEL 1 CACHE STRING "Set the instrumentation level 
 # Enable/disable shader compilation support that pulls in glslang
 set(VSG_SUPPORTS_ShaderCompiler  1 CACHE STRING "Optional shader compiler support, 0 for off, 1 for enabled." )
 if (VSG_SUPPORTS_ShaderCompiler)
+    find_package(glslang)
+endif()
+
+
+if (VSG_SUPPORTS_ShaderCompiler AND NOT glslang_FOUND)
     if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/glslang/build_vars.cmake)
 
         if (Git_FOUND)
 
             set(glslang_URL "https://github.com/vsg-dev/glslang.git" CACHE STRING "URL of the glslang git repository")
             set(glslang_branch "VSG-1.0.x" CACHE STRING "branch/tag of the glslang git repository")
+            add_definitions(-DVSG_USE_GIT_GLSLANG)
 
             execute_process(COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch ${glslang_branch} ${glslang_URL}
                             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src
