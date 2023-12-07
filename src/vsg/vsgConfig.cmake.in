@@ -1,6 +1,6 @@
 include(CMakeFindDependencyMacro)
 
-find_package(Vulkan @Vulkan_MIN_VERSION@ REQUIRED)
+find_package(Vulkan @Vulkan_MIN_VERSION@ REQUIRED OPTIONAL_COMPONENTS glslang)
 find_dependency(Threads)
 
 @FIND_DEPENDENCY_WINDOWING@

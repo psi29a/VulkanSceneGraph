@@ -33,7 +33,7 @@ if (VULKAN_SDK)
     set(ENV{VULKAN_SDK} ${VULKAN_SDK})
 endif()
 
-find_package(Vulkan ${Vulkan_MIN_VERSION} REQUIRED)
+find_package(Vulkan ${Vulkan_MIN_VERSION} REQUIRED OPTIONAL_COMPONENTS glslang)
 
 find_package(Threads REQUIRED)
 
@@ -42,12 +42,7 @@ set(VSG_MAX_INSTRUMENTATION_LEVEL 1 CACHE STRING "Set the instrumentation level 
 
 # Enable/disable shader compilation support that pulls in glslang
 set(VSG_SUPPORTS_ShaderCompiler  1 CACHE STRING "Optional shader compiler support, 0 for off, 1 for enabled." )
-if (VSG_SUPPORTS_ShaderCompiler)
-    find_package(glslang)
-endif()
-
-
-if (VSG_SUPPORTS_ShaderCompiler AND NOT glslang_FOUND)
+if (VSG_SUPPORTS_ShaderCompiler AND NOT Vulkan_glslang_FOUND)
     if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/glslang/build_vars.cmake)
 
         if (Git_FOUND)
