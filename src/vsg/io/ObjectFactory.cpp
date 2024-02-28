@@ -189,6 +189,7 @@ ObjectFactory::ObjectFactory()
     add<vsg::SpotLight>();
     add<vsg::TileDatabase>();
     add<vsg::TileDatabaseSettings>();
+    add<vsg::InstrumentationNode>();
 
     // vulkan objects
     add<vsg::BindGraphicsPipeline>();
@@ -214,6 +215,7 @@ ObjectFactory::ObjectFactory()
     add<vsg::BindDescriptorSets>();
     add<vsg::BindDescriptorSet>();
     add<vsg::BindVertexBuffers>();
+    add<vsg::DescriptorTexelBufferView>();
     add<vsg::BindIndexBuffer>();
     add<vsg::BindViewDescriptorSets>();
     add<vsg::DescriptorSet>();
@@ -239,6 +241,7 @@ ObjectFactory::ObjectFactory()
     add<vsg::EndQuery>();
     add<vsg::ResetQueryPool>();
     add<vsg::CopyQueryPoolResults>();
+    add<vsg::SetPrimitiveTopology>();
 
     // text
     add<vsg::GlyphMetricsArray>();
@@ -282,6 +285,16 @@ ObjectFactory::ObjectFactory()
     add<vsg::DrawMeshTasksIndirect>();
     add<vsg::DrawMeshTasksIndirectCount>();
 
+    // animation
+    add<vsg::TransformKeyframes>();
+    add<vsg::TransformSampler>();
+    add<vsg::MorphKeyframes>();
+    add<vsg::MorphSampler>();
+    add<vsg::JointSampler>();
+    add<vsg::Animation>();
+    add<vsg::AnimationGroup>();
+    add<vsg::Joint>();
+
     // io
     add<vsg::Options>();
     add<vsg::CompositeReaderWriter>();
@@ -316,6 +329,6 @@ vsg::ref_ptr<vsg::Object> ObjectFactory::create(const std::string& className)
         return (itr->second)();
     }
 
-    warn("ObjectFactory::create(", className, ") failed to find means to create object");
+    warn("ObjectFactory::create(", className, ") failed to find means to create object.");
     return vsg::ref_ptr<vsg::Object>();
 }

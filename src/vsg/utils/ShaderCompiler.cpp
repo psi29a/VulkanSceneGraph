@@ -20,7 +20,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <vsg/utils/ShaderCompiler.h>
 
 #if VSG_SUPPORTS_ShaderCompiler
-#    include <SPIRV/GlslangToSpv.h>
+#ifdef VSG_USE_GIT_GLSLANG
+#       include <SPIRV/GlslangToSpv.h>
+#else
+#       include <glslang/SPIRV/GlslangToSpv.h>
+#endif
 #    include <glslang/Public/ResourceLimits.h>
 #    include <glslang/Public/ShaderLang.h>
 #endif
@@ -427,16 +431,6 @@ std::string ShaderCompiler::combineSourceAndDefines(const std::string& source, c
 void ShaderCompiler::apply(Node& node)
 {
     node.traverse(*this);
-}
-
-void ShaderCompiler::apply(StateGroup& stategroup)
-{
-    for (auto& stateCommand : stategroup.stateCommands)
-    {
-        stateCommand->accept(*this);
-    }
-
-    stategroup.traverse(*this);
 }
 
 void ShaderCompiler::apply(BindGraphicsPipeline& bgp)

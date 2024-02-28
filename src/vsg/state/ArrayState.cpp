@@ -30,6 +30,19 @@ using namespace vsg;
 //
 // ArrayState
 //
+ArrayState::ArrayState(const ArrayState& rhs, const CopyOp& copyop) :
+    Inherit(rhs, copyop),
+    localToWorldStack(rhs.localToWorldStack),
+    worldToLocalStack(rhs.worldToLocalStack),
+    topology(rhs.topology),
+    vertex_attribute_location(rhs.vertex_attribute_location),
+    vertexAttribute(rhs.vertexAttribute),
+    vertices(rhs.vertices),
+    proxy_vertices(rhs.proxy_vertices),
+    arrays(rhs.arrays)
+{
+}
+
 ref_ptr<const vec3Array> ArrayState::vertexArray(uint32_t /*instanceIndex*/)
 {
     return vertices;
@@ -102,7 +115,7 @@ void ArrayState::applyArrays(uint32_t firstBinding, const DataList& in_arrays)
     std::copy(in_arrays.begin(), in_arrays.end(), arrays.begin() + firstBinding);
 
     // if the required vertexAttribute is within the new arrays apply the appropriate array to set up the vertices array
-    if ((vertexAttribute.binding >= firstBinding) && ((vertexAttribute.binding - firstBinding) < arrays.size()))
+    if ((vertexAttribute.binding >= firstBinding) && ((vertexAttribute.binding - firstBinding) < arrays.size()) && arrays[vertexAttribute.binding])
     {
         arrays[vertexAttribute.binding]->accept(*this);
     }
@@ -117,7 +130,7 @@ void ArrayState::applyArrays(uint32_t firstBinding, const BufferInfoList& in_arr
     }
 
     // if the required vertexAttribute is within the new arrays apply the appropriate array to set up the vertices array
-    if ((vertexAttribute.binding >= firstBinding) && ((vertexAttribute.binding - firstBinding) < arrays.size()))
+    if ((vertexAttribute.binding >= firstBinding) && ((vertexAttribute.binding - firstBinding) < arrays.size()) && arrays[vertexAttribute.binding])
     {
         arrays[vertexAttribute.binding]->accept(*this);
     }

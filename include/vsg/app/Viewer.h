@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 </editor-fold> */
 
+#include <vsg/animation/AnimationManager.h>
 #include <vsg/app/CompileManager.h>
 #include <vsg/app/Presentation.h>
 #include <vsg/app/RecordAndSubmitTask.h>
@@ -19,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <vsg/app/Window.h>
 #include <vsg/threading/Barrier.h>
 #include <vsg/threading/FrameBlock.h>
+#include <vsg/utils/Instrumentation.h>
 
 #include <map>
 
@@ -85,13 +87,19 @@ namespace vsg
             updateOperations->add(op, runBehavior);
         }
 
+        /// manager for starting and running animations
+        ref_ptr<AnimationManager> animationManager;
+
         /// compile manager provides thread safe support for compiling subgraphs
         ref_ptr<CompileManager> compileManager;
+
+        /// hint for setting the FrameStamp::simulationTime to time since start_point()
+        static constexpr double UseTimeSinceStartPoint = std::numeric_limits<double>::max();
 
         /// Convenience method for advancing to the next frame.
         /// Check active status, return false if viewer no longer active.
         /// If still active, poll for pending events and place them in the Events list and advance to the next frame, generate updated FrameStamp to signify the advancement to a new frame and return true.
-        virtual bool advanceToNextFrame();
+        virtual bool advanceToNextFrame(double simulationTime = UseTimeSinceStartPoint);
 
         /// pass the Events into any registered EventHandlers
         virtual void handleEvents();
@@ -132,6 +140,12 @@ namespace vsg
 
         /// Call vkDeviceWaitIdle on all the devices associated with this Viewer
         virtual void deviceWaitIdle() const;
+
+        /// Hook for assigning Instrumentation to enable profiling of record traversal.
+        ref_ptr<Instrumentation> instrumentation;
+
+        /// Convenience method for assigning Instrumentation to the viewer and any associated objects.
+        void assignInstrumentation(ref_ptr<Instrumentation> in_instrumentation);
 
     protected:
         virtual ~Viewer();

@@ -28,7 +28,7 @@ namespace vsg
     {
     public:
         ArrayState() = default;
-        ArrayState(const ArrayState&) = default;
+        ArrayState(const ArrayState& rhs, const CopyOp& copyop = {});
 
         /// clone self
         virtual ref_ptr<ArrayState> clone()
