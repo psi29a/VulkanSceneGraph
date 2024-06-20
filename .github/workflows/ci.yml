@@ -4,7 +4,7 @@ on:
   pull_request:
 env:
   BuildDocEnabled: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-  CMakeVersion: 3.10.x
+  CMakeVersion: 3.19.x
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -22,22 +22,25 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v1.12
+      uses: jwlawson/actions-setup-cmake@v1.14.1
       with:
         cmake-version: ${{ env.CMakeVersion }}
-    - name: Install Vulkan SDK
-      uses: humbletim/install-vulkan-sdk@v1.1.1
+    - name: Prepare Vulkan SDK
+      uses: humbletim/setup-vulkan-sdk@v1.2.0
       with:
-        version: ${{ matrix.vulkan-version }}
-        cache: true
+        vulkan-query-version: ${{ matrix.vulkan-version }}
+        vulkan-components: Vulkan-Headers, Vulkan-Loader, Glslang
+        vulkan-use-cache: true
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v1.3.1
+      with:
+        msbuild-architecture: x64
       if: startsWith(matrix.os, 'windows')
     - name: Build and Install VSG
       shell: bash
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-              cmake . -DBUILD_SHARED_LIBS=${{matrix.build-shared}} -A x64
+              cmake . -DBUILD_SHARED_LIBS=${{matrix.build-shared}}
               MSBuild.exe INSTALL.vcxproj -p:Configuration=Release
          elif [ "$RUNNER_OS" == "Linux" ]; then
               cmake . -DBUILD_SHARED_LIBS=${{matrix.build-shared}}
