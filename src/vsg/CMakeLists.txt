@@ -237,6 +237,7 @@ endif()
 set(LIBRARIES PUBLIC
         Vulkan::Vulkan
         Threads::Threads
+        glslang
 )
 
 # Check for std::atomic
